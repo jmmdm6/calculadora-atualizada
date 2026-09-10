@@ -1,3 +1,7 @@
+* {
+    box-sizing: border-box;
+}
+
 body {
     margin: 0;
     display: flex;
@@ -5,51 +9,51 @@ body {
     align-items: center;
     min-height: 100vh;
     background-color: hsl(0, 0%, 95%);
-    padding: 16px;
-    box-sizing: border-box;
+    padding: 12px;
 }
 
 #calculator {
     font-family: arial, sans-serif;
     background-color: hsl(0, 0%, 15%);
     border-radius: 15px;
-    width: 100%;
-    max-width: 400px;
+    /* min(): usa 92% da largura da tela OU 340px, o que for menor.
+       Isso garante que em celular a calculadora nunca passe de 92vw
+       (sempre sobra respiro nas laterais) e em telas grandes ela para
+       de crescer em 340px — bem menor que os 500/400px de antes, que
+       era o motivo de continuar parecendo grande. */
+    width: min(92vw, 340px);
     overflow: hidden;
-    box-sizing: border-box;
 }
 
 #display {
     width: 100%;
-    padding: 20px;
-    /* clamp(mínimo, ideal, máximo): o texto do visor acompanha a largura da
-       tela em vez de ficar fixo em 5rem (o que estourava em celulares) */
-    font-size: clamp(1.8rem, 9vw, 3.5rem);
+    padding: 4vw 5vw;
+    /* min(): o texto cresce com a tela até um teto de 2.4rem — evita
+       tanto "gigante" em telas largas quanto vazamento em telas estreitas */
+    font-size: min(9vw, 2.4rem);
     text-align: right;
     border: none;
     background-color: hsl(0, 0%, 20%);
     color: white;
-    box-sizing: border-box;
+    white-space: nowrap;
+    overflow-x: auto;
 }
 
 #keys {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 10px;
-    padding: 20px;
+    gap: 2.5vw;
+    padding: 4vw;
 }
 
 button {
-    /* sem largura/altura fixas: cada botão ocupa 1 célula do grid (1fr) e
-       aspect-ratio mantém o formato redondo/quadrado proporcional ao espaço
-       disponível, então a calculadora inteira encolhe junto com a tela */
     width: 100%;
     aspect-ratio: 1 / 1;
     border-radius: 50%;
     border: none;
     background-color: hsl(0, 0%, 30%);
     color: white;
-    font-size: clamp(1.1rem, 5vw, 1.8rem);
+    font-size: min(5vw, 1.3rem);
     font-weight: bold;
     cursor: pointer;
 }
@@ -74,14 +78,15 @@ button:active {
     background-color: hsl(35, 100%, 75%);
 }
 
-/* Celulares bem pequenos: reduz um pouco mais o respiro interno */
-@media (max-width: 360px) {
-    #keys {
-        gap: 8px;
-        padding: 14px;
-    }
+/* Botão "0" ocupa 2 colunas e vira uma pílula em vez de círculo,
+   já que ele é duas vezes mais largo que alto */
+.zero-btn {
+    grid-column: span 2;
+    aspect-ratio: auto;
+    border-radius: 999px;
+}
 
-    #display {
-        padding: 16px;
-    }
+/* Destaque leve pro botão de igual */
+.igual-btn {
+    background-color: hsl(35, 100%, 50%);
 }
