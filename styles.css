@@ -1,61 +1,96 @@
+
 * {
     box-sizing: border-box;
 }
 
+html {
+    width: 100%;
+    min-height: 100%;
+    -webkit-text-size-adjust: 100%;
+}
+
 body {
     margin: 0;
+    padding: 12px;
+
     display: flex;
     justify-content: center;
     align-items: center;
+
     min-height: 100vh;
+    min-height: 100dvh;
+
     background-color: hsl(0, 0%, 95%);
-    padding: 12px;
+    font-family: Arial, sans-serif;
 }
 
+/* Calculadora responsiva */
+
 #calculator {
-    font-family: arial, sans-serif;
+    font-family: Arial, sans-serif;
     background-color: hsl(0, 0%, 15%);
     border-radius: 15px;
-    /* min(): usa 92% da largura da tela OU 340px, o que for menor.
-       Isso garante que em celular a calculadora nunca passe de 92vw
-       (sempre sobra respiro nas laterais) e em telas grandes ela para
-       de crescer em 340px — bem menor que os 500/400px de antes, que
-       era o motivo de continuar parecendo grande. */
-    width: min(92vw, 340px);
+
+    width: 100%;
+    max-width: 340px;
+    min-width: 0;
+
     overflow: hidden;
 }
 
+/* Visor */
+
 #display {
+    display: block;
     width: 100%;
-    padding: 4vw 5vw;
-    /* min(): o texto cresce com a tela até um teto de 2.4rem — evita
-       tanto "gigante" em telas largas quanto vazamento em telas estreitas */
-    font-size: min(9vw, 2.4rem);
+    min-width: 0;
+
+    height: clamp(75px, 22vw, 100px);
+    padding: 12px;
+
+    font-size: clamp(25px, 8vw, 38px);
     text-align: right;
+
     border: none;
+    outline: none;
+
     background-color: hsl(0, 0%, 20%);
     color: white;
+
     white-space: nowrap;
     overflow-x: auto;
 }
 
+/* Grade dos botões */
+
 #keys {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 2.5vw;
-    padding: 4vw;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+
+    gap: clamp(5px, 2vw, 9px);
+    padding: clamp(10px, 3.5vw, 14px);
 }
+
+/* Botões */
 
 button {
     width: 100%;
+    min-width: 0;
     aspect-ratio: 1 / 1;
-    border-radius: 50%;
+
+    padding: 0;
     border: none;
+    border-radius: 50%;
+
     background-color: hsl(0, 0%, 30%);
     color: white;
-    font-size: min(5vw, 1.3rem);
+
+    font-size: clamp(16px, 5vw, 21px);
     font-weight: bold;
+
     cursor: pointer;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
 }
 
 button:hover {
@@ -65,6 +100,8 @@ button:hover {
 button:active {
     background-color: hsl(0, 0%, 50%);
 }
+
+/* Operadores */
 
 .operador-btn {
     background-color: hsl(35, 100%, 55%);
@@ -78,15 +115,83 @@ button:active {
     background-color: hsl(35, 100%, 75%);
 }
 
-/* Botão "0" ocupa 2 colunas e vira uma pílula em vez de círculo,
-   já que ele é duas vezes mais largo que alto */
+/* Botão zero */
+
 .zero-btn {
     grid-column: span 2;
     aspect-ratio: auto;
     border-radius: 999px;
 }
 
-/* Destaque leve pro botão de igual */
+/* Botão de igual */
+
 .igual-btn {
     background-color: hsl(35, 100%, 50%);
 }
+
+/* Celulares pequenos */
+
+@media (max-width: 360px) {
+    body {
+        padding: 8px;
+    }
+
+    #calculator {
+        max-width: 100%;
+        border-radius: 12px;
+    }
+
+    #keys {
+        gap: 5px;
+        padding: 9px;
+    }
+
+    #display {
+        padding: 10px;
+    }
+
+    button {
+        font-size: clamp(15px, 5vw, 18px);
+    }
+}
+
+/* Tablets e computadores */
+
+@media (min-width: 600px) {
+    body {
+        padding: 24px;
+    }
+
+    #calculator {
+        max-width: 340px;
+    }
+
+    #keys {
+        gap: 9px;
+        padding: 14px;
+    }
+}
+
+/* Celular na horizontal */
+
+@media (max-height: 450px) and (orientation: landscape) {
+    body {
+        align-items: flex-start;
+        padding: 8px;
+    }
+
+    #calculator {
+        max-width: 300px;
+    }
+
+    #display {
+        height: 60px;
+        font-size: 25px;
+    }
+
+    #keys {
+        gap: 5px;
+        padding: 8px;
+    }
+}
+
